@@ -10,8 +10,15 @@ module.exports = {
     // all the registries
     async index(req, res) {
         // query the db for all products
-        const products = await Product.find();
+        // const products = await Product.find();
 
+        // destructures the request for getting the page item
+        // default value = 1
+        const { page = 1 } = req.query
+
+        // paginate response
+        // page: page (short syntax)
+        const products = await Product.paginate({}, {page, limit: 10});
         // return query results using the json format
         return res.json(products);
     },
