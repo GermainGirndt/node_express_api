@@ -15,9 +15,11 @@ module.exports = {
         // destructures the request for getting the page item
         // default value = 1
         const { page = 1 } = req.query
+        console.log(page)
 
         // paginate response
         // page: page (short syntax)
+        // (before: await Product.find();)
         const products = await Product.paginate({}, {page, limit: 10});
         // return query results using the json format
         return res.json(products);
@@ -57,6 +59,19 @@ module.exports = {
     async destroy(req, res) {
         await Product.findByIdAndRemove(req.params.id);
         // just return a success status
+        return res.send();
+
+    },
+
+    async destroy_all(req, res) {
+
+        const products = await Product.find()
+
+        console.log(products)
+        for (let product of products) {
+            console.log(
+            await Product.findByIdAndRemove(product._id))
+        }
         return res.send();
 
     },
